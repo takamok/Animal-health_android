@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "147958693890",
+    "firebase_url": "https://animal-health-d5254.firebaseio.com",
+    "project_id": "animal-health-d5254",
+    "storage_bucket": "animal-health-d5254.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147958693890:android:63d0f4839f3558a28c271b",
+        "android_client_info": {
+          "package_name": "com.example.animal_health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147958693890-37odiel5d7dq86rhirb8lgjucjb7lvca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.animal_health",
+            "certificate_hash": "51cfd44560241339d837dfbea2f4e90a215acb56"
+          }
+        },
+        {
+          "client_id": "147958693890-adksv2b2144n6a2p3l55ld6e3ioh8e54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVDE48p4hQB_1YZfB9M77j18DSKk-y_tc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147958693890-adksv2b2144n6a2p3l55ld6e3ioh8e54.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
