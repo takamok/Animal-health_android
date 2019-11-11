@@ -34,7 +34,7 @@
         </activity>
         <activity android:name=".MapActivity"/>
         <activity android:name=".MainLogin"/>
-        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".web_dogmate"/>
     </application>
 
 </manifest>

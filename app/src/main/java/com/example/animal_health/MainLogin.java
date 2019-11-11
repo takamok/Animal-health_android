@@ -46,7 +46,7 @@ public class MainLogin extends AppCompatActivity {
                 startActivityForResult(signInIntent, 101);
             }
         });
-//        signOut.setVisibility(View.VISIBLE);
+        signOut.setVisibility(View.GONE);
         profileName = findViewById(R.id.profile_text);
         profileEmail = findViewById(R.id.profile_email);
         signOut=findViewById(R.id.sign_out);
