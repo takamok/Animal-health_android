@@ -30,8 +30,8 @@ public class MainHospital extends ArrayAdapter<Hospital> {
         TextView textViewAddress = (TextView) listViewItem.findViewById(R.id.textViewAddress);
 
         Hospital hospital = hospitals.get(position);
-        textViewName.setText(hospital.getHospitalName());
-        textViewAddress.setText(hospital.getHospitalAddress());
+        textViewName.setText(hospital.getBIZPLC_NM());
+        textViewAddress.setText(hospital.getREFINE_LOTNO_ADDR());
 
         return listViewItem;
     }

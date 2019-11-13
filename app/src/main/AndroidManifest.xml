@@ -35,6 +35,9 @@
         <activity android:name=".MapActivity"/>
         <activity android:name=".MainLogin"/>
         <activity android:name=".web_dogmate"/>
+        <activity android:name=".MainReminder"/>
+        <activity android:name=".Maindisease"/>
+        <activity android:name=".MainPlay"/>
     </application>
 
 </manifest>

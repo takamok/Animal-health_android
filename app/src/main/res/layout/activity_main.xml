@@ -4,8 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="right">
+    <Button
+        android:id="@+id/sign_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:id="@+id/btnLogin"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,17 +34,18 @@
         tools:layout_editor_absoluteY="180dp">
 
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="450dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="258dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:src="@drawable/main_page" />
+
 
         </LinearLayout>
 
@@ -33,90 +53,64 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:stretchColumns="0,1"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:stretchColumns="0,1">
+
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/btnMap"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="지도"/>
-                <Button
-                    android:id="@+id/sign_out"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="50dp"
-                    android:visibility="invisible" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="Login"
-                    android:id="@+id/btnLogin"/>
-
-
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
+                <ImageButton
                     android:id="@+id/button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="질병정보" />
+                    android:layout_width="156dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:src="@drawable/disease"
+                    android:layout_marginBottom="20dp"/>
 
-                <Button
+                <ImageButton
                     android:id="@+id/button4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="학습정보" />
+                    android:layout_width="156dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:src="@drawable/puppytrain_a2" />
+
 
             </TableRow>
-
 
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <Button
+                <ImageButton
                     android:id="@+id/btuweb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="펫시터" />
+                    android:layout_width="156dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:src="@drawable/puppytrain2" />
 
-
-                <Button
+                <ImageButton
                     android:id="@+id/button2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="알람" />
+                    android:layout_width="156dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:src="@drawable/cal2" />
+
 
             </TableRow>
-
+            <ImageButton
+                android:id="@+id/btnMap"
+                android:layout_width="match_parent"
+                android:layout_height="134dp"
+                android:background="@color/white"
+                android:src="@drawable/googlemap" />
         </TableLayout>
 
+
+
     </LinearLayout>
-
-
-
-
-
 
 
 </LinearLayout>

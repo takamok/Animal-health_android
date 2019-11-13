@@ -72,6 +72,8 @@ public class MainLogin extends AppCompatActivity {
             }
         });
 
+
+
     }
 //    private void setDataOnView() {
 //        GoogleSignInAccount googleSignInAccount = getIntent().getParcelableExtra(GOOGLE_ACCOUNT);

@@ -13,10 +13,15 @@ import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -59,7 +65,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         GoogleApiClient.OnConnectionFailedListener{
 
 
-    private static final LatLng PERTH = new LatLng(37.5536078, 127.1946579);
+//    private static final LatLng PERTH = new LatLng(37.5536078, 127.1946579);
     private static final LatLng SYDNEY = new LatLng(37.6589637, 126.7688243);
     private static final LatLng BRISBANE = new LatLng(37.5335939, 127.1965640);
 
@@ -95,6 +101,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //a list to store all the artist from firebase database
     List<Hospital> hospitals;
     //our database reference object
+    double latt, logtt;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,85 +115,78 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         getLocationPermission();
 
-
-//         databaseHospital = database.getReference();
         hospitals = new ArrayList<>();
-  //      myRef.setValue("Hello, World!");
+
+        databaseHospital = FirebaseDatabase.getInstance().getReference().child("Hospital");
+
+
+        listViewHospital.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Hospital artist = hospitals.get(i);
+                myRef = FirebaseDatabase.getInstance().getReference().child("Hospital/"+artist.getCLSBIZ_DE());
+                System.out.println("get iiii"+ artist.getREFINE_WGS84_LOGT()+"//"+artist.getREFINE_WGS84_LAT());
+
+                mSearchText.setText(artist.getREFINE_ROADNM_ADDR());
+
+//                String lat = artist.getREFINE_WGS84_LAT();
+//                String logt = artist.getREFINE_WGS84_LOGT();
+//                double latt = Double.parseDouble(lat);
+//                double logtt = Double.parseDouble(logt);
+//               LatLng PERTH = new LatLng(latt, logtt);
+//                mPerth = mMap.addMarker(new MarkerOptions()
+//                        .position(PERTH)
+//                        .title("Perth"));
+//                mPerth.setTag(0);
+
+
+                return true;
+            }
+        });
 
 
 
-        // Read from the database
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.d(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
 
-        //getting the reference of artists node
-//         databaseHospital = database.getReference("");
+    }
 
-        // Attach a listener to read the data at our posts reference
-//        databaseHospital.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Hospital post = dataSnapshot.getValue(Hospital.class);
+//    private void showUpdateDeleteDialog(final String artistId, String artistName) {
 //
-//            }
+//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//        LayoutInflater inflater = getLayoutInflater();
+//        final View dialogView = inflater.inflate(R.layout.update_dialog, null);
+//        dialogBuilder.setView(dialogView);
 //
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                System.out.println("The read failed: " + databaseError.getCode());
-//            }
-//        });
+//        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
+//        final CalendarView calendarRemind = (CalendarView) dialogView.findViewById(R.id.calendarView);
+//        final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdateArtist);
+//        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteArtist);
+//        final TextView saving2 = (TextView) dialogView.findViewById(R.id.textView);
+//        dialogBuilder.setTitle(artistName);
+//        final AlertDialog b = dialogBuilder.create();
+//        b.show();
+//    }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    //getting artist
-//                    Hospital hospital = postSnapshot.getValue(Hospital.class);
-//                    //adding artist to the list
-//                     Log.d(TAG, "Value isssss: " + hospital);
-//                    hospitals.add(hospital);
-//                }
-//
-//                //creating adapter
-//                MainHospital artistAdapter = new MainHospital(MapActivity.this, hospitals);
-//                //attaching adapter to the listview
-//                listViewHospital.setAdapter(artistAdapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-//            }
-//        });
-        myRef = FirebaseDatabase.getInstance().getReference().child("Hospital");
-        ValueEventListener eventListener = new ValueEventListener() {
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //attaching value event listener
+        databaseHospital.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 //clearing the previous artist list
-        //        hospitals.clear();
+                hospitals.clear();
 
                 //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     //getting artist
-                    Hospital hospital = postSnapshot.getValue(Hospital.class);
+                    Hospital artist = postSnapshot.getValue(Hospital.class);
                     //adding artist to the list
-                    Log.d(TAG, "Value iss: " + hospital.getHospitalAddress());
-                    hospitals.add(hospital);
+                    hospitals.add(artist);
                 }
 
                 //creating adapter
@@ -199,28 +199,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        };
-        myRef.addListenerForSingleValueEvent(eventListener);
+        });
     }
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        //attaching value event listener
-//
-//    }
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
-        mPerth = mMap.addMarker(new MarkerOptions()
-                .position(PERTH)
-                .title("Perth"));
-        mPerth.setTag(0);
+//        mPerth = mMap.addMarker(new MarkerOptions()
+//                .position(PERTH)
+//                .title("Perth"));
+//        mPerth.setTag(0);
 
         mSydney = mMap.addMarker(new MarkerOptions()
                 .position(SYDNEY)
@@ -419,5 +411,3 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 }
-
-

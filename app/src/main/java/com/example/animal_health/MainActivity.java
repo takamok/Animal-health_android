@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,15 +39,19 @@ public class MainActivity extends AppCompatActivity {
     private SignInButton googleSignInButton;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private Button signOut, btnLogin;
+    private ImageButton btnMap, alarm, btuwebdog, play, dis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnMap = (ImageButton) findViewById(R.id.btnMap);
          btnLogin = (Button) findViewById(R.id.btnLogin);
-        Button btuwebdog = (Button)findViewById(R.id.btuweb);
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
+        alarm = (ImageButton) findViewById(R.id.button2);
+         btuwebdog = (ImageButton)findViewById(R.id.btuweb);
+        play = (ImageButton) findViewById(R.id.button4);
+        dis = (ImageButton) findViewById(R.id.button3);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference myRef = database.getReference("message");
@@ -68,10 +74,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainPlay.class);
+                startActivity(intent);
+            }
+        });
+        alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainReminder.class);
+                startActivity(intent);
+            }
+        });
         btuwebdog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), web_dogmate.class);
+                startActivity(intent);
+            }
+        });
+        dis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Maindisease.class);
                 startActivity(intent);
             }
         });
@@ -80,7 +107,10 @@ public class MainActivity extends AppCompatActivity {
         if(isServicesOK()){
             init();
         }
+        signOut=findViewById(R.id.sign_out);
         googleSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+
+        signOut.setVisibility(View.GONE);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -90,10 +120,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, 101);
+                //signOut.setVisibility(View.VISIBLE);
             }
         });
 
-        signOut=findViewById(R.id.sign_out);
+
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void init(){
-        Button btnMap = (Button) findViewById(R.id.btnMap);
+
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
