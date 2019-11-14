@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private Button signOut, btnLogin;
     private ImageButton btnMap, alarm, btuwebdog, play, dis;
+    public GoogleSignInAccount googleSignInAccount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("message");
 
         myRef.setValue("Hello, World!");
+
+        googleSignInAccount  = GoogleSignIn.getLastSignedInAccount(this);
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,40 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MainPlay.class);
-                startActivity(intent);
-            }
-        });
-        alarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MainReminder.class);
-                startActivity(intent);
-            }
-        });
-        btuwebdog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), web_dogmate.class);
-                startActivity(intent);
-            }
-        });
-        dis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Maindisease.class);
-                startActivity(intent);
-            }
-        });
-
-
-        if(isServicesOK()){
-            init();
-        }
         signOut=findViewById(R.id.sign_out);
         googleSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
@@ -120,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, 101);
-                //signOut.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -144,6 +114,43 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainPlay.class);
+                startActivity(intent);
+            }
+        });
+        alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainReminder.class);
+                String a = googleSignInAccount.getId();
+                intent.putExtra("name", a);
+                startActivity(intent);
+            }
+        });
+        btuwebdog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), web_dogmate.class);
+                startActivity(intent);
+            }
+        });
+        dis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Maindisease.class);
+                startActivity(intent);
+            }
+        });
+
+
+        if(isServicesOK()){
+            init();
+        }
+
     }
     private void init(){
 

@@ -16,19 +16,34 @@
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextName"/>
+        android:layout_height="292dp"
+        android:layout_below="@id/editTextName"
+        android:layout_marginTop="-13dp" />
+
+    <TimePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="match_parent"
+        android:layout_height="93dp"
+        android:layout_below="@id/calendarView"
+        android:timePickerMode="spinner" />
 
     <Button
         android:id="@+id/buttonAddArtist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/calendarView"
+        android:layout_below="@id/datePicker1"
         android:text="Add" />
 
 
     <TextView
         android:id="@+id/textViesave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonAddArtist"
+
+        android:textAlignment="center" />
+    <TextView
+        android:id="@+id/texttimepick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonAddArtist"

@@ -27,10 +27,12 @@ public class ReminderList extends ArrayAdapter<Reminder> {
 
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewGenre = (TextView) listViewItem.findViewById(R.id.textViewGenre);
+        TextView textViewTime = (TextView) listViewItem.findViewById(R.id.textViewTime);
 
         Reminder artist = artists.get(position);
         textViewName.setText(artist.getreminderName());
         textViewGenre.setText(artist.getreminderDate());
+        textViewTime.setText(artist.getreminderTime());
 
         return listViewItem;
     }

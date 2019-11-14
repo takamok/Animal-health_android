@@ -10,15 +10,17 @@ public class Reminder {
     private String reminderId;
     private String reminderName;
     private String reminderDate;
+    private String reminderTime;
 
     public Reminder(){
         //this constructor is required
     }
 
-    public Reminder(String reminderId, String reminderName, String reminderDate) {
+    public Reminder(String reminderId, String reminderName, String reminderDate, String reminderTime) {
         this.reminderId = reminderId;
         this.reminderName = reminderName;
         this.reminderDate = reminderDate;
+        this.reminderTime = reminderTime;
     }
 
     public String getreminderId() {
@@ -31,5 +33,9 @@ public class Reminder {
 
     public String getreminderDate() {
         return reminderDate;
+    }
+
+    public String getreminderTime() {
+        return reminderTime;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.animal_health;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -58,7 +60,9 @@ public class MainReminder extends AppCompatActivity {
     Button buttonAddReminder;
     ListView listViewCalender;
     String date;
-    TextView saving;
+    TextView saving, tvw;
+    TimePicker picker;
+    String j;
 
     //a list to store all the artist from firebase database
     List<Reminder> reminders;
@@ -71,15 +75,25 @@ public class MainReminder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
 
+        Intent iin= getIntent();
+        Bundle b = iin.getExtras();
+
+        if(b!=null)
+        {
+            j =(String) b.get("name");
+        }
         //getting the reference of artists node
-        databaseReminder = FirebaseDatabase.getInstance().getReference("Reminder");
+        databaseReminder = FirebaseDatabase.getInstance().getReference("Reminder/"+j);
 
         //getting views
         editTextName = (EditText) findViewById(R.id.editTextName);
         CalenderRemind = (CalendarView) findViewById(R.id.calendarView);
         listViewCalender = (ListView) findViewById(R.id.listViewArtists);
         saving = (TextView) findViewById(R.id.textViesave);
+        tvw = (TextView) findViewById(R.id.texttimepick);
         buttonAddReminder = (Button) findViewById(R.id.buttonAddArtist);
+        picker=(TimePicker)findViewById(R.id.datePicker1);
+       // picker.setIs24HourView(true);
 
         //list to store artists
         reminders = new ArrayList<>();
@@ -122,6 +136,25 @@ public class MainReminder extends AppCompatActivity {
                 saving.setText( year +" / " + (month+1) + " / " + dayOfMonth);
             }
         });
+        int hour, minute;
+        String am_pm;
+        if (Build.VERSION.SDK_INT >= 23 ){
+            hour = picker.getHour();
+            minute = picker.getMinute();
+        }
+        else{
+            hour = picker.getCurrentHour();
+            minute = picker.getCurrentMinute();
+        }
+        if(hour > 12) {
+            am_pm = "PM";
+            hour = hour - 12;
+        }
+        else
+        {
+            am_pm="AM";
+        }
+        tvw.setText(hour +":"+ minute+" "+am_pm);
 
         //checking if the value is provided
         if (!TextUtils.isEmpty(name)) {
@@ -131,8 +164,9 @@ public class MainReminder extends AppCompatActivity {
             String id = databaseReminder.push().getKey();
 
             String date = saving.getText().toString();
+            String time = tvw.getText().toString();
             //creating an Artist Object
-            Reminder artist = new Reminder(id, name, date);
+            Reminder artist = new Reminder(id, name, date, time);
 
             //Saving the Artist
             databaseReminder.child(id).setValue(artist);
@@ -179,12 +213,12 @@ public class MainReminder extends AppCompatActivity {
         });
     }
 
-    private boolean updateArtist(String id, String name, String genre) {
+    private boolean updateArtist(String id, String name, String genre, String time) {
         //getting the specified artist reference
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Reminder").child(id);
 
         //updating artist
-        Reminder artist = new Reminder(id, name, genre);
+        Reminder artist = new Reminder(id, name, genre, time);
         dR.setValue(artist);
         Toast.makeText(getApplicationContext(), "Event Updated", Toast.LENGTH_LONG).show();
         return true;
@@ -199,9 +233,12 @@ public class MainReminder extends AppCompatActivity {
 
         final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
         final CalendarView calendarRemind = (CalendarView) dialogView.findViewById(R.id.calendarView);
+        final TimePicker timepicker = (TimePicker) dialogView.findViewById(R.id.datePicker2);
         final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdateArtist);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteArtist);
         final TextView saving2 = (TextView) dialogView.findViewById(R.id.textView);
+        final TextView tvw2 = (TextView) dialogView.findViewById(R.id.textView2);
+
         dialogBuilder.setTitle(artistName);
         final AlertDialog b = dialogBuilder.create();
         b.show();
@@ -220,9 +257,29 @@ public class MainReminder extends AppCompatActivity {
                         saving2.setText( year +" / " + (month+1) + " / " + dayOfMonth);
                     }
                 });
+                int hour, minute;
+                String am_pm;
+                if (Build.VERSION.SDK_INT >= 23 ){
+                    hour = timepicker.getHour();
+                    minute = timepicker.getMinute();
+                }
+                else{
+                    hour = timepicker.getCurrentHour();
+                    minute = timepicker.getCurrentMinute();
+                }
+                if(hour > 12) {
+                    am_pm = "PM";
+                    hour = hour - 12;
+                }
+                else
+                {
+                    am_pm="AM";
+                }
+                tvw2.setText(hour +":"+ minute+" "+am_pm);
                 if (!TextUtils.isEmpty(namee)) {
                     String date2 = saving2.getText().toString();
-                    updateArtist(artistId, namee, date2);
+                    String time2 = tvw2.getText().toString();
+                    updateArtist(artistId, namee, date2, time2);
                     b.dismiss();
                 }
             }

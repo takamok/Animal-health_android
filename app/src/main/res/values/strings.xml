@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Animal-health</string>
+    <string name="google_maps_api_key"> AIzaSyDyY_IQC5VJ4Nu8_yH3I1799_IL8LtOQOM</string>
+
 </resources>

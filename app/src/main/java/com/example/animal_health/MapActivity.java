@@ -1,6 +1,7 @@
 package com.example.animal_health;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 //import android.support.v4.app.ActivityCompat;
 //import android.support.v4.content.ContextCompat;
 //import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,6 +50,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -55,6 +60,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.internal.PolylineEncoding;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,12 +76,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         GoogleApiClient.OnConnectionFailedListener{
 
 
-//    private static final LatLng PERTH = new LatLng(37.5536078, 127.1946579);
-    private static final LatLng SYDNEY = new LatLng(37.6589637, 126.7688243);
-    private static final LatLng BRISBANE = new LatLng(37.5335939, 127.1965640);
+    private static final LatLng h1 = new LatLng(37.5403468, 127.2148889);
+    private static final LatLng h2 = new LatLng(37.5536078, 127.1946579);
+    private static final LatLng h3 = new LatLng(37.6589637, 126.7688243);
+    private static final LatLng h4 = new LatLng(37.5335939, 127.1965640);
+    private static final LatLng h5 = new LatLng(37.5536078, 127.1946579);
+    private static final LatLng h6 = new LatLng(37.6589637, 126.7688243);
+    private static final LatLng h7 = new LatLng(37.5403468, 127.2148889);
+    private static final LatLng h8 = new LatLng(37.5536078, 127.1946579);
+    private static final LatLng h9 = new LatLng(37.6589637, 126.7688243);
 
 
-    private Marker mPerth;
+    private Marker ho1,ho2,ho3,ho4,ho5,ho6,ho7,ho8,ho9,ho10;
     private Marker mSydney;
     private Marker mBrisbane;
     private static final String TAG = "MapActivity";
@@ -96,6 +113,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private DatabaseReference databaseHospital;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private GeoApiContext mGeoApiContext;
 
     ListView listViewHospital;
     //a list to store all the artist from firebase database
@@ -129,16 +147,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 mSearchText.setText(artist.getREFINE_ROADNM_ADDR());
 
-//                String lat = artist.getREFINE_WGS84_LAT();
-//                String logt = artist.getREFINE_WGS84_LOGT();
-//                double latt = Double.parseDouble(lat);
-//                double logtt = Double.parseDouble(logt);
-//               LatLng PERTH = new LatLng(latt, logtt);
-//                mPerth = mMap.addMarker(new MarkerOptions()
-//                        .position(PERTH)
-//                        .title("Perth"));
-//                mPerth.setTag(0);
-
 
                 return true;
             }
@@ -149,22 +157,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-//    private void showUpdateDeleteDialog(final String artistId, String artistName) {
-//
-//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-//        LayoutInflater inflater = getLayoutInflater();
-//        final View dialogView = inflater.inflate(R.layout.update_dialog, null);
-//        dialogBuilder.setView(dialogView);
-//
-//        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
-//        final CalendarView calendarRemind = (CalendarView) dialogView.findViewById(R.id.calendarView);
-//        final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdateArtist);
-//        final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteArtist);
-//        final TextView saving2 = (TextView) dialogView.findViewById(R.id.textView);
-//        dialogBuilder.setTitle(artistName);
-//        final AlertDialog b = dialogBuilder.create();
-//        b.show();
-//    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -209,20 +201,32 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
-//        mPerth = mMap.addMarker(new MarkerOptions()
-//                .position(PERTH)
-//                .title("Perth"));
-//        mPerth.setTag(0);
+        ho1 = mMap.addMarker(new MarkerOptions()
+                .position(h1)
+                .title("메디안동물병원"));
+        ho1.setTag(0);
 
-        mSydney = mMap.addMarker(new MarkerOptions()
-                .position(SYDNEY)
-                .title("Sydney"));
-        mSydney.setTag(0);
+        ho2 = mMap.addMarker(new MarkerOptions()
+                .position(h2)
+                .title("팝애니랩"));
+        ho2.setTag(0);
 
-        mBrisbane = mMap.addMarker(new MarkerOptions()
-                .position(BRISBANE)
-                .title("Brisbane"));
-        mBrisbane.setTag(0);
+        ho3 = mMap.addMarker(new MarkerOptions()
+                .position(h3)
+                .title("쿨펫동물병원 장항점"));
+        ho3.setTag(0);
+        ho2 = mMap.addMarker(new MarkerOptions()
+                .position(h2)
+                .title("팝애니랩"));
+        ho2.setTag(0);
+
+        ho3 = mMap.addMarker(new MarkerOptions()
+                .position(h3)
+                .title("쿨펫동물병원 장항점"));
+        ho3.setTag(0);
+
+        //calculateDirections();
+
         if (mLocationPermissionsGranted) {
             getDeviceLocation();
 
@@ -280,6 +284,100 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         hideSoftKeyboard();
     }
+
+
+    private void initGoogleMap(Bundle savedInstanceState) {
+        // *** IMPORTANT ***
+        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
+        // objects or sub-Bundles.
+        Bundle mapViewBundle = null;
+//        if (savedInstanceState != null) {
+//            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+//        }
+
+
+//        mMapView.onCreate(mapViewBundle);
+//
+//        mMapView.getMapAsync(this);
+
+        if(mGeoApiContext == null){
+            mGeoApiContext = new GeoApiContext.Builder()
+                    .apiKey(getString(R.string.google_maps_api_key))
+                    .build();
+        }
+    }
+
+    private void calculateDirections(){
+        Log.d(TAG, "calculateDirections: calculating directions.");
+
+        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
+//                marker.getPosition().latitude,
+//                marker.getPosition().longitude
+                37.5403468, 127.2148889
+        );
+        DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
+
+        directions.alternatives(true);
+        directions.origin(
+                new com.google.maps.model.LatLng(
+                        36.800441, 127.077082
+                )
+        );
+        Log.d(TAG, "calculateDirections: destination: " + destination.toString());
+        directions.destination(destination).setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+                Log.d(TAG, "onResult: routes: " + result.routes[0].toString());
+               // Log.d(TAG, "onResult: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
+                Log.d(TAG, "onResult: successfully retrieved directions.");
+                addPolylinesToMap(result);
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                Log.e(TAG, "onFailure: " + e.getMessage() );
+
+            }
+        });
+    }
+
+
+    private void addPolylinesToMap(final DirectionsResult result){
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "run: result routes: " + result.routes.length);
+
+                for(DirectionsRoute route: result.routes){
+                    Log.d(TAG, "run: leg: " + route.legs[0].toString());
+                    List<com.google.maps.model.LatLng> decodedPath = PolylineEncoding.decode(route.overviewPolyline.getEncodedPath());
+
+                    List<LatLng> newDecodedPath = new ArrayList<>();
+
+                    // This loops through all the LatLng coordinates of ONE polyline.
+                    for(com.google.maps.model.LatLng latLng: decodedPath){
+
+//                        Log.d(TAG, "run: latlng: " + latLng.toString());
+
+                        newDecodedPath.add(new LatLng(
+                                latLng.lat,
+                                latLng.lng
+                        ));
+                    }
+                    Polyline polyline = mMap.addPolyline(new PolylineOptions().addAll(newDecodedPath));
+                    polyline.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+                    polyline.setClickable(true);
+
+                }
+            }
+        });
+    }
+
+    private Context getActivity() {
+
+        return null;
+    }
+
 
     private void geoLocate(){
         Log.d(TAG, "geoLocate: geolocating");

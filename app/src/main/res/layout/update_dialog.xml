@@ -16,6 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextName"/>
+    <TimePicker
+        android:id="@+id/datePicker2"
+        android:layout_width="395dp"
+        android:layout_height="129dp"
+        android:layout_below="@id/calendarView"
+        android:timePickerMode="spinner" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,6 +46,12 @@
 
     <TextView
         android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible"/>
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
