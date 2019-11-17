@@ -1,5 +1,11 @@
 package com.example.animal_health;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -30,7 +37,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.calendar.Calendar;
+//import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
@@ -38,6 +45,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.FileNotFoundException;
@@ -48,6 +56,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Calendar;
 
 public class MainReminder extends AppCompatActivity {
 
@@ -57,12 +66,13 @@ public class MainReminder extends AppCompatActivity {
     //view objects
     EditText editTextName;
     CalendarView CalenderRemind;
-    Button buttonAddReminder;
+    Button buttonAddReminder, buttonNof;
     ListView listViewCalender;
     String date;
     TextView saving, tvw;
     TimePicker picker;
-    String j;
+    String j, notif_dt, notif_nm;
+    
 
     //a list to store all the artist from firebase database
     List<Reminder> reminders;
@@ -98,6 +108,22 @@ public class MainReminder extends AppCompatActivity {
         //list to store artists
         reminders = new ArrayList<>();
 
+        Query mDatabaseHighestPlayer = databaseReminder.orderByChild("reminderDate").limitToFirst(1);
+        mDatabaseHighestPlayer.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot){
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    notif_dt = childSnapshot.child("reminderDate").getValue(String.class);
+                    notif_nm = childSnapshot.child("reminderName").getValue(String.class);
+                    createNotification(notif_nm +" : "+notif_dt, MainReminder.this);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException(); // don't swallow errors
+            }
+        });
+
 
         //adding an onclicklistener to button
         buttonAddReminder.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +132,10 @@ public class MainReminder extends AppCompatActivity {
                 //calling the method addArtist()
                 //the method is defined below
                 //this method is actually performing the write operation
+
                 addReminder();
+
+
             }
         });
 
@@ -119,6 +148,69 @@ public class MainReminder extends AppCompatActivity {
             }
         });
     }
+    private NotificationManager notifManager;
+    public void createNotification(String aMessage, Context context) {
+        final int NOTIFY_ID = 0; // ID of notification
+        String id = "Yes"; // default_channel_id
+        String title = "yes title"; // Default Channel
+        Intent intent;
+        PendingIntent pendingIntent;
+        NotificationCompat.Builder builder;
+        if (notifManager == null) {
+            notifManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = notifManager.getNotificationChannel(id);
+            if (mChannel == null) {
+                mChannel = new NotificationChannel(id, title, importance);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                notifManager.createNotificationChannel(mChannel);
+            }
+            builder = new NotificationCompat.Builder(context, id);
+            intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            builder.setContentTitle(aMessage)                            // required
+                    .setSmallIcon(android.R.drawable.ic_popup_reminder)   // required
+                    .setContentText(context.getString(R.string.app_name)) // required
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setTicker(aMessage)
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        }
+        else {
+            builder = new NotificationCompat.Builder(context, id);
+            intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            builder.setContentTitle(aMessage)                            // required
+                    .setSmallIcon(android.R.drawable.ic_popup_reminder)   // required
+                    .setContentText(context.getString(R.string.app_name)) // required
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setTicker(aMessage)
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
+                    .setPriority(Notification.PRIORITY_HIGH);
+        }
+        Notification notification = builder.build();
+        notifManager.notify(NOTIFY_ID, notification);
+    }
+//    public void createNotification (View view) {
+//        Intent myIntent = new Intent(getApplicationContext() , NotifyService. class ) ;
+//        AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE ) ;
+//        PendingIntent pendingIntent = PendingIntent. getService ( this, 0 , myIntent , 0 ) ;
+//        Calendar calendar = Calendar. getInstance () ;
+//        calendar.set(Calendar. SECOND , 0 ) ;
+//        calendar.set(Calendar. MINUTE , 0 ) ;
+//        calendar.set(Calendar. HOUR , 0 ) ;
+//        calendar.set(Calendar. AM_PM , Calendar. AM ) ;
+//        calendar.add(Calendar. DAY_OF_MONTH , 1 ) ;
+//        alarmManager.setRepeating(AlarmManager. RTC_WAKEUP , calendar.getTimeInMillis() , 1000 * 60 * 60 * 24 , pendingIntent) ;
+//    }
 
     /*
      * This method is saving a new artist to the

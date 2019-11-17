@@ -37,6 +37,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.animal_health.directionhelpers.FetchURL;
+import com.example.animal_health.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -44,6 +46,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -72,7 +75,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback,
         GoogleApiClient.OnConnectionFailedListener{
 
 
@@ -114,6 +117,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private GeoApiContext mGeoApiContext;
+    private Button getDirection;
+
+    private MarkerOptions place1, place2;
+    private Polyline currentPolyline;
 
     ListView listViewHospital;
     //a list to store all the artist from firebase database
@@ -130,6 +137,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
         listViewHospital = (ListView) findViewById(R.id.listViewMap) ;
         mGps = (ImageView) findViewById(R.id.ic_gps);
+        getDirection = findViewById(R.id.btnGetDirection);
 
         getLocationPermission();
 
@@ -151,11 +159,45 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return true;
             }
         });
+        place1 = new MarkerOptions().position(new LatLng(37.5403468, 127.2148889)).title("Location 1");
+        place2 = new MarkerOptions().position(new LatLng(37.5536078, 127.1946579)).title("Location 2");
+        getDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FetchURL(MapActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
+            }
+        });
+
+//        MapFragment mapFragment = (MapFragment) getFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
 
 
 
     }
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=Dumai&destination=PekanBaru&key=AIzaSyD1ePGQMbyUpRMMEwCMaQO-V0XT4WDCC64";// + output + "?" + parameters + "&key=" + "AIzaSyD1ePGQMbyUpRMMEwCMaQO-V0XT4WDCC64";
+        return url;
+    }
+
+//    @Override
+//    public void onTaskDone(Object... values) {
+//        if (currentPolyline != null)
+//            currentPolyline.remove();
+//        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+//    }
 
 
     @Override
@@ -201,6 +243,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
+        Log.d("mylog", "Added Markers");
+        mMap.addMarker(place1);
+        mMap.addMarker(place2);
         ho1 = mMap.addMarker(new MarkerOptions()
                 .position(h1)
                 .title("메디안동물병원"));
@@ -225,7 +270,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .title("쿨펫동물병원 장항점"));
         ho3.setTag(0);
 
-        //calculateDirections();
+//        calculateDirections();
 
         if (mLocationPermissionsGranted) {
             getDeviceLocation();
@@ -330,7 +375,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Log.d(TAG, "onResult: routes: " + result.routes[0].toString());
                // Log.d(TAG, "onResult: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
                 Log.d(TAG, "onResult: successfully retrieved directions.");
-                addPolylinesToMap(result);
+                //addPolylinesToMap(result);
             }
 
             @Override
@@ -508,4 +553,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
 }

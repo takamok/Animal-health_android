@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button signOut, btnLogin;
     private ImageButton btnMap, alarm, btuwebdog, play, dis;
     public GoogleSignInAccount googleSignInAccount;
+    TextView usernm;
 
 
     @Override
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
          btuwebdog = (ImageButton)findViewById(R.id.btuweb);
         play = (ImageButton) findViewById(R.id.button4);
         dis = (ImageButton) findViewById(R.id.button3);
+        usernm = (TextView) findViewById(R.id.textViewnameuser);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference myRef = database.getReference("message");
@@ -91,10 +94,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, 101);
 
+
             }
         });
 
 
+  //      usernm.setText(unm);
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,9 +219,13 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         GoogleSignInAccount alreadyloggedAccount = GoogleSignIn.getLastSignedInAccount(this);
+
         if (alreadyloggedAccount != null) {
             Toast.makeText(this, "Already Logged In", Toast.LENGTH_SHORT).show();
+
             onLoggedIn(alreadyloggedAccount);
+            String unm = googleSignInAccount.getDisplayName();
+            usernm.setText("안녕하세요, "+unm+"!  ");
         } else {
             Log.d(TAG, "Not logged in");
         }

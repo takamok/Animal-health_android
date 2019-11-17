@@ -10,11 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="428dp"
         tools:context=".MapsActivity" />
+    <Button
+        android:id="@+id/btnGetDirection"
+        android:text="Get Direction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:layout_below="@+id/map" />
     <ListView
         android:id="@+id/listViewMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/map"></ListView>
+        android:layout_below="@+id/btnGetDirection"></ListView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
