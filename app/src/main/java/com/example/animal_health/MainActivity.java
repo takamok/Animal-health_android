@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
          btuwebdog = (ImageButton)findViewById(R.id.btuweb);
         play = (ImageButton) findViewById(R.id.button4);
         dis = (ImageButton) findViewById(R.id.button3);
-        usernm = (TextView) findViewById(R.id.textViewnameuser);
+        //usernm = (TextView) findViewById(R.id.textViewnameuser);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference myRef = database.getReference("message");
@@ -224,8 +224,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Already Logged In", Toast.LENGTH_SHORT).show();
 
             onLoggedIn(alreadyloggedAccount);
-            String unm = googleSignInAccount.getDisplayName();
-            usernm.setText("안녕하세요, "+unm+"!  ");
+//            String unm = googleSignInAccount.getDisplayName();
+//            usernm.setText("안녕하세요, "+unm+"!  ");
         } else {
             Log.d(TAG, "Not logged in");
         }

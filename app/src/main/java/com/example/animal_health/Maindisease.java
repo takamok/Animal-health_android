@@ -45,46 +45,46 @@ public class Maindisease extends AppCompatActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> adapterView, View view, int menu, long l) {
         Toast.makeText(getApplicationContext(),dis[menu] , Toast.LENGTH_LONG).show();
         if(dis[menu].equals("링웜(피부병)")){
-            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fringworm.PNG?alt=media&token=3b060016-96ac-48fe-9e6d-4e9361a1746d";
+            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fringworm.PNG?alt=media&token=09c9f234-9301-48d1-8480-e169b68048b2";
             Glide.with(getApplicationContext()).load(url).into(ivdismu1);
-            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fringworm2.PNG?alt=media&token=7f73e450-606b-435c-a0c6-7973717a30de";
+            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fringworm2.PNG?alt=media&token=8a32f30b-43f3-4ed8-842b-a733859b47bf";
             Glide.with(getApplicationContext()).load(ur2).into(ivdismu2);
 
         }else if(dis[menu].equals("발작")){
-            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion1.PNG?alt=media&token=8f78958c-6d31-4816-95b8-d57f755243d1";
+            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion1.PNG?alt=media&token=7b5d8074-bb9a-408e-bde9-5e2802900d8b";
             Glide.with(getApplicationContext()).load(url).into(ivdismu1);
-            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion2.PNG?alt=media&token=b5468792-21b2-4035-957f-eff490f201fe";
+            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion2.PNG?alt=media&token=f8d12068-5a3b-43c8-ba2d-5eea0a4a68db";
             Glide.with(getApplicationContext()).load(ur2).into(ivdismu2);
-            String ur3 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion3.PNG?alt=media&token=6a7d190d-beb6-4a0f-bfc6-55573ca88f5f";
+            String ur3 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion3.PNG?alt=media&token=7bf6343c-f5f2-4035-acf5-9e2d871649ed";
             Glide.with(getApplicationContext()).load(ur3).into(ivdismu3);
-            String ur4 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion4.PNG?alt=media&token=c2fc4402-3599-4f72-9b7d-b54abfc3b00a";
+            String ur4 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fconvulsion4.PNG?alt=media&token=ff4c18bf-8382-4d11-93c4-ba4ef1e66e2b";
             Glide.with(getApplicationContext()).load(ur4).into(ivdismu4);
 
         }else if(dis[menu].equals("급성 심부전")){
-            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FHeart%20failure.PNG?alt=media&token=2132cdbc-beb4-4c3c-bdf0-b1956f4e9d2c";
+            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FHeart%20failure.PNG?alt=media&token=77d30918-79c9-48d1-a4af-d50a58279941";
             Glide.with(getApplicationContext()).load(url).into(ivdismu1);
-            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FHeart%20failure2.PNG?alt=media&token=84ab3526-1c0c-45b8-a035-d91364136667";
+            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FHeart%20failure2.PNG?alt=media&token=4b012ce9-5031-419b-b05a-70f686c08e35";
             Glide.with(getApplicationContext()).load(ur2).into(ivdismu2);
 
         }else if(dis[menu].equals("심장 사상충")){
-            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FDirofilaria%20immitis.PNG?alt=media&token=6b43c4bd-19b4-40cf-ad72-25a64bef0d99";
+            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FDirofilaria%20immitis.PNG?alt=media&token=863482d3-510e-4a8b-a688-2602d527078c";
             Glide.with(getApplicationContext()).load(url).into(ivdismu1);
-            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FDirofilaria%20immitis2.PNG?alt=media&token=5434ffb1-a81a-48bc-9249-e41cb3fb797d";
+            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FDirofilaria%20immitis2.PNG?alt=media&token=7129c134-e57d-431a-842e-6bccfd842826";
             Glide.with(getApplicationContext()).load(ur2).into(ivdismu2);
 
 
         }else if(dis[menu].equals("음식물 중독")){
-            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FToxicology.PNG?alt=media&token=6bd75a64-c491-4b6b-9276-46f86d80a89a";
+            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FToxicology.PNG?alt=media&token=ca824d16-9b40-43c1-8c41-90e8eeeb99d1";
             Glide.with(getApplicationContext()).load(url).into(ivdismu1);
-            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FToxicology2.PNG?alt=media&token=3c0fd240-e584-4dc0-9d1f-20a51db6675e";
+            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FToxicology2.PNG?alt=media&token=a2f4c185-daa0-4fcc-9908-b1b8ef63a969";
             Glide.with(getApplicationContext()).load(ur2).into(ivdismu2);
-            String ur3 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FToxicology3.PNG?alt=media&token=00cb12a1-fb1d-4efd-8daf-5f146f45e9dc";
+            String ur3 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FToxicology3.PNG?alt=media&token=2ab16b88-b0c3-4061-93ab-a5a57e7e97ee";
             Glide.with(getApplicationContext()).load(ur3).into(ivdismu3);
 
         }else if(dis[menu].equals("장폐색")){
-            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FIleus.PNG?alt=media&token=ad404637-7175-4424-a8fc-7223590a140b";
+            String url = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2FIleus.PNG?alt=media&token=446ae10e-8b67-4cbf-8474-6a8cfd166198";
             Glide.with(getApplicationContext()).load(url).into(ivdismu1);
-            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fileus2.PNG?alt=media&token=a2f2dcb0-53e2-40b4-a011-1d1c846f8f34";
+            String ur2 = "https://firebasestorage.googleapis.com/v0/b/animal-health-d5254.appspot.com/o/disease%2Fileus2.PNG?alt=media&token=fa9858eb-ee83-4e94-a05d-c0f1b4313eca";
             Glide.with(getApplicationContext()).load(ur2).into(ivdismu2);
 
         }
