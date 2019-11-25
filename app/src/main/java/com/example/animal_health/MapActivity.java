@@ -137,7 +137,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
         listViewHospital = (ListView) findViewById(R.id.listViewMap) ;
         mGps = (ImageView) findViewById(R.id.ic_gps);
-        getDirection = findViewById(R.id.btnGetDirection);
+    //    getDirection = findViewById(R.id.btnGetDirection);
 
         getLocationPermission();
 
@@ -161,12 +161,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
         place1 = new MarkerOptions().position(new LatLng(37.5403468, 127.2148889)).title("Location 1");
         place2 = new MarkerOptions().position(new LatLng(37.5536078, 127.1946579)).title("Location 2");
-        getDirection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new FetchURL(MapActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
-            }
-        });
+//        getDirection.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new FetchURL(MapActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
+//            }
+//        });
 
 //        MapFragment mapFragment = (MapFragment) getFragmentManager()
 //                .findFragmentById(R.id.map);
